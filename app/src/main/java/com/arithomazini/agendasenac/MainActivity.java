@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.arithomazini.agendasenac.dao.ContatoDAO;
 import com.arithomazini.agendasenac.model.Contato;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -22,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Contato> contatos = CadastrarContatoActivity.contatos;
+        ContatoDAO dao = new ContatoDAO(this, "agenda", null, 1);
         ListView listView = findViewById(R.id.ListViewContatos);
 
-        listView.setAdapter(new ArrayAdapter<Contato>(this, android.R.layout.simple_list_item_1, contatos));
+        listView.setAdapter(new ArrayAdapter<Contato>(this, android.R.layout.simple_list_item_1, dao.listar()));
 
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {

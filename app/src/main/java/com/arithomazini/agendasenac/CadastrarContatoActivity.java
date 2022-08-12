@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.arithomazini.agendasenac.dao.ContatoDAO;
 import com.arithomazini.agendasenac.model.Contato;
 
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ public class CadastrarContatoActivity extends AppCompatActivity {
                 contato.setEmail(editEmail.getText().toString());
                 contato.setTelefone(editTelefone.getText().toString());
 
-                contatos.add(contato);
+                ContatoDAO dao = new ContatoDAO(CadastrarContatoActivity.this, "agenda", null, 1);
+                dao.salvar(contato);
 
                 Intent intent = new Intent(CadastrarContatoActivity.this, MainActivity.class);
                 startActivity(intent);
