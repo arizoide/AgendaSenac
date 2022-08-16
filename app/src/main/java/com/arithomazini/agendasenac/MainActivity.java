@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,6 +35,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, CadastrarContatoActivity.class);
                 startActivity(i);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intencao = new Intent(MainActivity.this, CadastrarContatoActivity.class);
+                String nome = listView.getItemAtPosition(position).toString();
+                intencao.putExtra("NOME", nome);
+                startActivity(intencao);
+                return false;
             }
         });
 

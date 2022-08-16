@@ -65,4 +65,30 @@ public class ContatoDAO extends SQLiteOpenHelper {
 
         return contatos;
     }
+
+    public Contato listarByNome(String nome) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM CONTATO WHERE NOME = ?", new String[]{nome});
+        Contato c = new Contato();
+        if(cursor.moveToFirst()){
+            do {
+                c.setId(cursor.getInt(0));
+                c.setNome(cursor.getString(1));
+                c.setEmail(cursor.getString(2));
+                c.setTelefone(cursor.getString(3));
+            } while (cursor.moveToNext());
+        }
+        return c;
+    }
+
+    public void atualizar(Contato c) {
+        ContentValues cv = new ContentValues();
+        cv.put("NOME", c.getNome());
+        cv.put("EMAIL", c.getEmail());
+        cv.put("TELEFONE", c.getTelefone());
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.update("CONTATO", cv, "ID = ?", new String[]{c.getId().toString()});
+    }
 }
