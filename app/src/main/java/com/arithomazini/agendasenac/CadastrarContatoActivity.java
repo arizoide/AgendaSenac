@@ -33,21 +33,25 @@ public class CadastrarContatoActivity extends AppCompatActivity {
 
         Button cadastrar = findViewById(R.id.buttonCadastrar);
 
+        Button atualizar = findViewById(R.id.buttonAtualizar);
+
         cadastrar.setText("Cadastrar");
 
         String nome = getIntent().getStringExtra("NOME");
 
         Contato contato = null;
 
-        if(nome != null && !nome.isEmpty()) {
+        cadastrar.setVisibility(View.VISIBLE);
+        atualizar.setVisibility(View.INVISIBLE);
+
+        if (nome != null && !nome.isEmpty()) {
             contato = dao.listarByNome(nome);
             editNome.setText(contato.getNome());
             editEmail.setText(contato.getEmail());
             editTelefone.setText(contato.getTelefone());
-            cadastrar.setText("Atualizar");
+            cadastrar.setVisibility(View.INVISIBLE);
+            atualizar.setVisibility(View.VISIBLE);
         }
-
-
 
         Contato finalContato = contato;
         cadastrar.setOnClickListener(new View.OnClickListener() {
@@ -64,15 +68,30 @@ public class CadastrarContatoActivity extends AppCompatActivity {
                 if (contatoExistente != null && contatoExistente.getId() != null) {
                     Toast.makeText(CadastrarContatoActivity.this, "Nome já existe", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (nome != null && !nome.isEmpty()) {
-                        c.setId(finalContato.getId());
-                        dao.atualizar(c);
 
-                        getIntent().putExtra("NOME", "");
-                    } else {
-                        dao.salvar(c);
-                    }
+                    dao.salvar(c);
+                    Intent intent = new Intent(CadastrarContatoActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
+        atualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Contato contatoExistente = dao.listarByNome(editNome.getText().toString());
+
+                if (contatoExistente.getId()!= null && contatoExistente.getId() != finalContato.getId()){
+                    Toast.makeText(CadastrarContatoActivity.this, "Nome já existe", Toast.LENGTH_SHORT).show();
+                } else {
+                    Contato c = new Contato();
+                    c.setNome(editNome.getText().toString());
+                    c.setEmail(editEmail.getText().toString());
+                    c.setTelefone(editTelefone.getText().toString());
+                    c.setId(finalContato.getId());
+                    dao.atualizar(c);
+                    getIntent().putExtra("NOME", "");
                     Intent intent = new Intent(CadastrarContatoActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
