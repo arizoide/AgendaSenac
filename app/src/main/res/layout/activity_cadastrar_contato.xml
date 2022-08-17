@@ -6,6 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".CadastrarContatoActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+
+        app:theme="?attr/actionBarPopupTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
+
+            <ImageView
+                android:id="@+id/imagemTrash"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/img" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+
     <EditText
         android:id="@+id/editTextNome"
         android:layout_width="320dp"

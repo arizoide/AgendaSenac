@@ -1,6 +1,7 @@
 package com.arithomazini.agendasenac;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.arithomazini.agendasenac.dao.ContatoDAO;
@@ -24,6 +26,9 @@ public class CadastrarContatoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_contato);
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         ContatoDAO dao = new ContatoDAO(CadastrarContatoActivity.this, "agenda", null, 1);
 
@@ -43,6 +48,7 @@ public class CadastrarContatoActivity extends AppCompatActivity {
 
         cadastrar.setVisibility(View.VISIBLE);
         atualizar.setVisibility(View.INVISIBLE);
+        myToolbar.setVisibility(View.INVISIBLE);
 
         if (nome != null && !nome.isEmpty()) {
             contato = dao.listarByNome(nome);
@@ -51,13 +57,15 @@ public class CadastrarContatoActivity extends AppCompatActivity {
             editTelefone.setText(contato.getTelefone());
             cadastrar.setVisibility(View.INVISIBLE);
             atualizar.setVisibility(View.VISIBLE);
+            myToolbar.setVisibility(View.VISIBLE);
         }
+
+        ImageView image = findViewById(R.id.imagemTrash);
 
         Contato finalContato = contato;
         cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Contato c = new Contato();
                 c.setNome(editNome.getText().toString());
                 c.setEmail(editEmail.getText().toString());
@@ -95,6 +103,16 @@ public class CadastrarContatoActivity extends AppCompatActivity {
                     Intent intent = new Intent(CadastrarContatoActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
+            }
+        });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Contato contatoExistente = dao.listarByNome(editNome.getText().toString());
+                dao.remover(contatoExistente.getId());
+                Intent intent = new Intent(CadastrarContatoActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }

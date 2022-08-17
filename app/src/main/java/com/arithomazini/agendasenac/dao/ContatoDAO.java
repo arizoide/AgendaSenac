@@ -91,4 +91,9 @@ public class ContatoDAO extends SQLiteOpenHelper {
 
         db.update("CONTATO", cv, "ID = ?", new String[]{c.getId().toString()});
     }
+
+    public void remover(Integer id) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("CONTATO", "ID = ?", new String[]{id.toString()});
+    }
 }
